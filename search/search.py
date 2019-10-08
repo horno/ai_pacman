@@ -120,35 +120,24 @@ def depthFirstSearch(problem):
                 visited[coor] = fringe[-1]
     print "No solution"'''
 
-
-
-
-
-
-
-
-
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     n = node.Node(None, None, 0, problem.getStartState())
     if problem.isGoalState(n.state):
         return n.total_path()           
     fringe = [n]
-    generated = {}
-    generated[n.state] = [n, 'F']
-    while True:
-        if len(fringe) == 0:
-            print "No solution"
-            sys.exit()
+    generated = {n.state:[n,'F']}
+    while fringe:
         n = fringe.pop(0)
         generated[n.state] = [n, 'E']
-        
         for state, action, cost in problem.getSuccessors(n.state):
-            ns = node.Node( n, action, cost, state)
-            if ns.state not in generated:
+            if state not in generated:
+                ns = node.Node(n, action, cost, state)
                 if problem.isGoalState(ns.state): return ns.total_path()
                 fringe.append(ns)
                 generated[ns.state] = [ns, 'F']
+    print("No solution")
+    sys.exit()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
@@ -156,13 +145,9 @@ def uniformCostSearch(problem):
     fringe = [n]
     generated = {}
     generated[n.state] = [n, 'F']
-    while True:
-        if len(fringe) == 0:
-            print "No solution"
-            sys.exit()
+    while fringe:
         n = fringe.pop(0)
         generated[n.state] = [n, 'E']
-
         for state, action, cost in problem.getSuccessors(n.state):
             ns = node.Node(n, action, cost, state)
             if ns.state not in generated:
@@ -171,7 +156,8 @@ def uniformCostSearch(problem):
                 generated[ns.state] = [ns, 'F']
             elif ns.pathcost < generated[ns.state][0].pathcost:
                 generated[ns.state] = ns
-
+    print("No solution")
+    sys.exit()
 
 def nullHeuristic(state, problem=None):
     """
