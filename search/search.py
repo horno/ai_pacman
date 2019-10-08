@@ -85,13 +85,27 @@ def depthFirstSearch(problem):
 
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
-
+    
     print "Start:", problem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
 
     fringe = [node.Node(None, None, 0, problem.getStartState())]
+    visited = {}
+
+    while fringe:
+        n = fringe.pop(-1)
+        if problem.isGoalState(n.state):
+            return n.total_path()
+        visited[n.state] = n
+        for coor, action, cost in problem.getSuccessors(n.state):
+            if coor not in visited:
+                fringe.append(node.Node(n, action, n.pathcost + cost, coor))
+     
+    print "No solution"
+
+'''fringe = [node.Node(None, None, 0, problem.getStartState())]
     visited = {}
 
     for nod in fringe:
@@ -104,7 +118,14 @@ def depthFirstSearch(problem):
             if not coor in visited:
                 fringe.append(node.Node(n, action, n.pathcost + cost, coor))
                 visited[coor] = fringe[-1]
-    print "No solution"
+    print "No solution"'''
+
+
+
+
+
+
+
 
 
 def breadthFirstSearch(problem):
@@ -148,7 +169,7 @@ def uniformCostSearch(problem):
                 if problem.isGoalState(ns.state): return ns.total_path()
                 fringe.append(ns)
                 generated[ns.state] = [ns, 'F']
-            elif ns.pathcost < generated[ns.state][0].pathcost
+            elif ns.pathcost < generated[ns.state][0].pathcost:
                 generated[ns.state] = ns
 
 
